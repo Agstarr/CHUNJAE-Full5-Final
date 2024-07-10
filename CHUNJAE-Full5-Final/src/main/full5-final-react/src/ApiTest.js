@@ -7,7 +7,7 @@ function ApiTest() {
     const [hello, setHello] = useState('');
 
     useEffect(() => {
-        axios.get('/back/back/hello')
+        axios.get('/back/hello')
             .then((res) => {
                 setHello(res.data);
             })
@@ -26,7 +26,6 @@ function ApiTest() {
         } catch (error) {
             console.error('Error fetching data:', error);
         }
-
 
     };
 
