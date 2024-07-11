@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './list.css';
 
 const List = () => {
     const [items, setItems] = useState(['A', 'B', 'C', 'D', 'E', 'F']);
