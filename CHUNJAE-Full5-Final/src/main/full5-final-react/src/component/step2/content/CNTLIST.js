@@ -1,4 +1,5 @@
 function CNTLIST({itemList}) {
+
     return <div className="view-que-list scroll-inner">
         {itemList.map((item) => {
             return <div key={item.itemId} className="view-que-box">

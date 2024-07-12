@@ -19,12 +19,11 @@ function App() {
         <BrowserRouter>
             <Routes>
                 {/** STEP 2 **/}
-                <Route path={'/'} element={<STEP2/>}></Route>
+                <Route path={'/step2'} element={<STEP2/>}></Route>
                 {/** STEP 3 **/}
                 <Route path={'/step3'} element={<STEP3/>}></Route>
             </Routes>
         </BrowserRouter>
-
     </>
 }
 
