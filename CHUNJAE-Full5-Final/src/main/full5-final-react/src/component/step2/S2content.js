@@ -10,15 +10,16 @@ function S2content() {
     useEffect(() => {
         const List = async () => {
             try {
+                /** api 7번 **/
                 const url = '/api/item-img/exam-list/item-list'
 
-                /** STEP 1 에서 넘겨주는 examId  **/
+                /** STEP 1 에서 넘겨주는 examIdList  **/
                 const data = {
                     examIdList: ["500"]
                 };
 
                 const response = await axios.post(url, data);
-                console.log(response.data.itemList);
+                // console.log(response.data.itemList);
                 setResponse(response.data.itemList);
             } catch (error) {
                 console.error('Error response api .... ', error)
@@ -28,9 +29,9 @@ function S2content() {
     }, [])
 
     return <div className="view-box">
-        {/* 컨텐트 정보 */}
+        {/** 컨텐트 정보 **/}
         <VIEWTOP itemList={response}/>
-        {/* 컨텐트 리스트, 문제 요약, 유사, 삭제 */}
+        {/** 컨텐트 리스트, 문제 요약, 유사, 삭제 **/}
         <VIEWBOTTOM itemList={response}/>
     </div>
 }
