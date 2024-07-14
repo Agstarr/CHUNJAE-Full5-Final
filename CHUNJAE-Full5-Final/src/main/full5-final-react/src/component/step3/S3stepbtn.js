@@ -3,6 +3,7 @@ import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import PdfTest from "./pdfTest/PdfTest";
 import generatePDF from "react-to-pdf"
+import PdfSave from "./pdfTest/PdfSave";
 
 function S3stepbtn(){
 
@@ -10,7 +11,7 @@ function S3stepbtn(){
     const targetRef = useRef();
 
     useEffect(()=>{
-        const savePaper=async ()=>{
+        const paperList=async ()=>{
             try{
                 const apiUrl = "api/item/exam/item-list"
                 const data = {
@@ -30,15 +31,16 @@ function S3stepbtn(){
                 console.log(error,'.....error.....');
             }
         }
-        savePaper();
+        paperList();
     },[]) // [] : 한 번만 호출
+
 
     return <>
         <Link to="/"><button className="btn-step">STEP 2 문항 편집</button></Link>
-        <Link><button className="btn-step next"
-                      onClick={()=>generatePDF(targetRef
-                          , {filename: "시험지테스트"})}>시험지 저장하기</button></Link>
-        <PdfTest ref={targetRef} itemList={response}></PdfTest>
+        {/*<Link><button className="btn-step next"*/}
+        {/*              onClick={()=>savePaper()}>시험지 저장하기</button></Link>*/}
+        {/*<PdfTest ref={targetRef} itemList={response}></PdfTest>*/}
+        <PdfSave data={response}></PdfSave>
     </>
 }
 export default S3stepbtn;
