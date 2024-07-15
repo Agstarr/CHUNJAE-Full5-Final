@@ -1,4 +1,20 @@
+import ModalTest from "./ModalTest";
+import {useState} from "react";
+
 function VIEWTOP({itemList}){
+
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const openModal = () => {
+        setModalOpen(true);
+        document.body.style.overflow = "hidden";
+    };
+
+    const closeModal = () => {
+        setModalOpen(false);
+        document.body.style.overflow = "unset";
+    };
+
     return <>
         <div className="view-top">
             <div className="paper-info">
@@ -9,7 +25,8 @@ function VIEWTOP({itemList}){
             <button className="btn-default btn-research">
                <i className="research"></i>재검색
             </button>
-            <button className="btn-default pop-btn">출제범위</button>
+            <button onClick={openModal} className="btn-default pop-btn">출제범위</button>
+            <ModalTest data={itemList} open={modalOpen} onClose={closeModal} />
         </div>
     </>
 }

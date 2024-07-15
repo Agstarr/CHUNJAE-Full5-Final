@@ -1,9 +1,10 @@
 import {Link} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
-import PdfTest from "./pdfTest/PdfTest";
-import generatePDF from "react-to-pdf"
 import PdfSave from "./pdfTest/PdfSave";
+import PdfComp from "./pdfTest/PdfComp";
+import PdfComp2 from "./pdfTest/PdfComp2";
+import PdfSave2 from "./pdfTest/PdfSave2";
 
 function S3stepbtn(){
 
@@ -15,7 +16,8 @@ function S3stepbtn(){
             try{
                 const apiUrl = "api/item/exam/item-list"
                 const data = {
-                    examId: "1515"
+                    // examId: "1515"
+                    examId: "1517"
                 }
 
                 /** 6번 API */
@@ -34,13 +36,13 @@ function S3stepbtn(){
         paperList();
     },[]) // [] : 한 번만 호출
 
-
     return <>
         <Link to="/"><button className="btn-step">STEP 2 문항 편집</button></Link>
         {/*<Link><button className="btn-step next"*/}
         {/*              onClick={()=>savePaper()}>시험지 저장하기</button></Link>*/}
-        {/*<PdfTest ref={targetRef} itemList={response}></PdfTest>*/}
+        {/*<PdfComp ref={targetRef} itemList={response}></PdfComp>*/}
         <PdfSave data={response}></PdfSave>
+        {/*<PdfSave2 data={response}></PdfSave2>*/}
     </>
 }
 export default S3stepbtn;

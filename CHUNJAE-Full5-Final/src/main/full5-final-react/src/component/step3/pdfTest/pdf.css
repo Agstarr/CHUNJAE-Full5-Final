@@ -1,0 +1,23 @@
+.pdf-content {
+    -moz-column-count: 2;
+    -moz-columns: 2;
+    -webkit-columns: 2;
+    columns: 2;
+    column-gap: 20px;
+
+    padding: 30px;
+
+    /*display: grid;*/
+    /*grid-template-columns: repeat(2, 1fr);*/
+    /*grid-template-rows: auto auto;*/
+    /*grid-gap: 20px;*/
+}
+
+.paragraph{
+    word-break: break-all;
+}
+
+.txt{
+
+    word-break: break-all;
+}
