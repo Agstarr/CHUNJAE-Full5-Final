@@ -41,8 +41,9 @@ function S3stepbtn(){
         {/*<Link><button className="btn-step next"*/}
         {/*              onClick={()=>savePaper()}>시험지 저장하기</button></Link>*/}
         {/*<PdfComp ref={targetRef} itemList={response}></PdfComp>*/}
-        <PdfSave data={response}></PdfSave>
+        {/*<PdfSave data={response}></PdfSave>*/}
         {/*<PdfSave2 data={response}></PdfSave2>*/}
+        <Link to="/pdf"></Link>
     </>
 }
 export default S3stepbtn;

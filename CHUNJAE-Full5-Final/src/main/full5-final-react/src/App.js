@@ -5,6 +5,7 @@ import {useState} from "react";
 import STEP2 from "./component/step2/STEP2";
 import STEP3 from "./component/step3/STEP3";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+import PdfSave2 from "./component/step3/pdfTest/PdfSave2";
 
 function App() {
 
@@ -22,6 +23,8 @@ function App() {
                 <Route path={'/step2'} element={<STEP2/>}></Route>
                 {/** STEP 3 **/}
                 <Route path={'/step3'} element={<STEP3/>}></Route>
+                {/** pdf 테스트 페이지 */}
+                <Route path={'/pdf'} element={<PdfSave2/>}></Route>
             </Routes>
         </BrowserRouter>
     </>
