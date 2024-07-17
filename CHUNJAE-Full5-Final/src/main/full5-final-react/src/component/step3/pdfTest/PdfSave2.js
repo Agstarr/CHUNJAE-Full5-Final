@@ -2,6 +2,8 @@ import imgSrc from './img.png';
 import imgSrc2 from './img2.png';
 import "./pdf2.css"
 import React, {useEffect, useRef, useState} from "react";
+import ReactToPdf from 'react-to-pdf';
+import axios from "axios";
 
 /*
 const PdfSave2 = () => {
@@ -267,7 +269,7 @@ export default PdfSave2;*/
 export default PdfSave2;*/
 
 
-function PdfSave2() {
+/*function PdfSave2() {
     const paperStyle = {
         height: '297mm'
         , width: '210mm'
@@ -285,7 +287,7 @@ function PdfSave2() {
 
     const imgStyle = {
         width: '90mm'
-        , margin: '5mm 0'
+        , margin: '15px 0'
     }
 
     const examStyle = {
@@ -315,25 +317,34 @@ function PdfSave2() {
 
 
         imgElements.forEach(img => {
+            // console.log(currentContainer.offsetHeight*2)
             imgHeightSum += img.offsetHeight;
             // console.log(img.clientHeight);
             if(img.clientHeight > img.offsetHeight){
                 img.style.height = img.offsetHeight * 2;
-            }else if(imgHeightSum > 1800){
+            }else if(imgHeightSum > (currentContainer.offsetHeight)*2){
                 const nextPaper = document.createElement('div');
                 const nextPage = document.createElement('div');
                 const paper = document.getElementById("paper");
-                nextPage.appendChild(img);
-                nextPaper.appendChild(nextPage);
-                paper.appendChild(nextPaper);
-                nextPage.className = 'exam';
-                nextPaper.className = 'paper';
+                if(img.nextElementSibling+imgHeightSum > (currentContainer.offsetHeight-30)*2){
+                    nextPage.appendChild(img);
+                    nextPaper.appendChild(nextPage);
+                    paper.appendChild(nextPaper);
+                    nextPage.className = 'exam';
+                    nextPaper.className = 'paper';
+                }
                 // console.log('......',document.getElementById('firstPage').previousSibling);
             }
+            console.log("전체 길이 : ",(currentContainer.offsetHeight-30)*2);
+            console.log("이미지 : ",img.clientHeight);
+            console.log("이미지 길이 합 : ",imgHeightSum);
+            console.log('=========================================');
         })
     }, []);
 
-    return <div id="paper" className="parent-container container" >
+    const ref = React.createRef();
+
+    return <div id="paper" className="parent-container container" ref={ref}>
         <div className="firstPaper paper">
             <div style={headerStyle}>
                 <div>테스트 시험지</div>
@@ -358,7 +369,124 @@ function PdfSave2() {
     </div>
 }
 
+export default PdfSave2;*/
+
+
+import { createRoot } from 'react-dom/client';
+
+const PdfSave2 = () => {
+    const [questions, setQuestions] = useState([]);
+    const [pages, setPages] = useState([]);
+    const containerRef = useRef(null);
+
+    useEffect(()=>{
+        const paperList=async ()=>{
+            try{
+                const apiUrl = "api/item/exam/item-list"
+                const data = {
+                    examId: "1511"
+                    // examId: "1517"
+                }
+
+                /** 6번 API */
+                const response=await axios
+                    .post(apiUrl, data);
+                setQuestions([response.data.itemList]);
+                // console.log(response.data.itemList);
+
+                response.data.itemList.map(item=>{
+                    // console.log(item.question);
+                })
+            }catch (error){
+                console.log(error,'.....error.....');
+            }
+        }
+        paperList();
+    },[]) // [] : 한 번만 호출
+
+    useEffect(() => {
+        if (questions.length > 0) {
+            const splitQuestionsIntoColumns = () => {
+                const container = containerRef.current;
+                const maxHeight = container ? container.clientHeight / 2 : 297 * 4;
+                const updatedPages = [[]];
+                let currentPage = [[], []];
+                let currentHeights = [0, 0];
+
+                questions.forEach((question, index) => {
+                    const questionElement = (
+                        <div key={question.id} className="question">
+                            {question.passage}
+                        </div>
+                    );
+
+                    // 임시 컨테이너 생성
+                    const tempContainer = document.createElement('div');
+                    tempContainer.style.position = 'absolute';
+                    tempContainer.style.visibility = 'hidden';
+                    document.body.appendChild(tempContainer);
+
+                    // 임시 컨테이너에 질문 렌더링
+                    const root = createRoot(tempContainer);
+                    root.render(questionElement);
+
+                    const questionHeight = tempContainer.clientHeight;
+                    document.body.removeChild(tempContainer);
+
+                    const columnToUse = currentHeights[0] <= currentHeights[1] ? 0 : 1;
+
+                    if (currentHeights[columnToUse] + questionHeight > maxHeight) {
+                        if (columnToUse === 0) {
+                            currentPage[1].push(questionElement);
+                            currentHeights[1] += questionHeight;
+                        } else {
+                            updatedPages.push(currentPage);
+                            currentPage = [[], []];
+                            currentHeights = [0, 0];
+                            currentPage[0].push(questionElement);
+                            currentHeights[0] += questionHeight;
+                        }
+                    } else {
+                        currentPage[columnToUse].push(questionElement);
+                        currentHeights[columnToUse] += questionHeight;
+                    }
+                });
+
+                updatedPages.push(currentPage);
+                setPages(updatedPages);
+            };
+
+            splitQuestionsIntoColumns();
+        }
+    }, [questions]);
+
+    return (
+        <div className="exam-paper" ref={containerRef}>
+            {pages.map((page, pageIndex) => (
+                <div key={pageIndex} className="page">
+                    <div className="column">
+                        {page[0] && page[0].map((question, questionIndex) => (
+                            <div key={questionIndex} className="question">
+                                {question}
+                            </div>
+                        ))}
+                    </div>
+                    <div className="column">
+                        {page[1] && page[1].map((question, questionIndex) => (
+                            <div key={questionIndex} className="question">
+                                {question}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+
+};
 export default PdfSave2;
+
+
 
 
 
