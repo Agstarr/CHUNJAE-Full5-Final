@@ -36,6 +36,16 @@ function S3stepbtn(){
         paperList();
     },[]) // [] : 한 번만 호출
 
+/*    const submit = async (event) => {
+        event.preventDefault();
+        try {
+            await axios.post('/pdf', { response });
+            console.log('successful!!!');
+        } catch (error) {
+            console.log(error,'.....error.....');
+        }
+    };*/
+
     return <>
         <Link to="/"><button className="btn-step">STEP 2 문항 편집</button></Link>
         {/*<Link><button className="btn-step next"*/}
@@ -44,6 +54,9 @@ function S3stepbtn(){
         {/*<PdfSave data={response}></PdfSave>*/}
         {/*<PdfSave2 data={response}></PdfSave2>*/}
         <Link to="/pdf"></Link>
+{/*        <form onSubmit={submit}>
+            <button type="submit">시험지 저장하기</button>
+        </form>*/}
     </>
 }
 export default S3stepbtn;
