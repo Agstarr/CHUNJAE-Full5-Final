@@ -3,7 +3,7 @@ let imgList = [];
 for(let i=0; i<15; i++){
     const img = document.createElement('img');
     if(i%2===0 || i===1 || i===7){
-        img.src = '/static/image/img2.png'
+        img.src = '/static/image/temp.svg'
     }else{
         img.src = '/static/image/img.png';
     }
@@ -152,15 +152,42 @@ window.onload = function (){
 
         }
 
-
-
-
-
-        /* right 있는 문제 수 > 2
-        or
-        right에 있는 문제 높이의 합이 right의 높이보다 커지는 경우 */
-
         console.log(index);
         index++; // 이미지 번호+1
     })
+
 }
+
+
+function downloadPDF() {
+    const pages = document.querySelectorAll('.page'); // 클래스 이름이 'page'인 모든 요소 선택
+
+    // Promise 배열을 사용하여 각 페이지를 순차적으로 처리하고 PDF 생성
+    Promise.all(Array.from(pages).map((page, index) => {
+        return html2canvas(page, {
+            scale: 2, // 해상도 조정
+            allowTaint: true,
+            useCORS: true
+        }).then((canvas) => {
+            return canvas.toDataURL('image/png'); // 각 페이지의 캔버스를 PNG 데이터 URL로 변환
+        });
+    })).then((pageImages) => {
+        const pdf = new jspdf.jsPDF();
+
+        const imgWidth = 210; // A4 가로 크기 (mm)
+        const imgHeight = 297; // A4 세로 크기 (mm)
+
+        // 각 페이지 이미지를 PDF에 추가
+        pageImages.forEach((imageData, index) => {
+            if (index > 0) {
+                pdf.addPage(); // 새로운 페이지 추가
+            }
+            pdf.addImage(imageData, 'PNG', 0, 0, imgWidth, imgHeight);
+        });
+
+        pdf.save("download.pdf"); // PDF 저장
+    }).catch((error) => {
+        console.error('Error generating PDF:', error);
+    });
+}
+
