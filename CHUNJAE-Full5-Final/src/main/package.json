@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "http-proxy-middleware": "^3.0.0"
+    "html2canvas": "^1.4.1",
+    "http-proxy-middleware": "^3.0.0",
+    "jspdf": "^2.5.1"
   }
 }
